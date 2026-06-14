@@ -93,36 +93,55 @@ class VavooExtractor:
         unique_id = hashlib.md5(str(time.time()).encode()).hexdigest()[:16]
         now_ms = int(time.time() * 1000)
         body = {
-            "token": _LOKKE_TOKEN,
-            "reason": "app-blur",
-            "locale": "de",
-            "theme": "dark",
-            "metadata": {
-                "device": {"type": "Handset", "brand": "google", "model": "Nexus", "name": "21081111RG", "uniqueId": unique_id},
-                "os": {"name": "android", "version": "7.1.2", "abis": ["arm64-v8a"], "host": "android"},
-                "app": {"platform": "android", "version": "1.1.0", "buildId": "97215000", "engine": "hbc85",
-                        "signatures": ["6e8a975e3cbf07d5de823a760d4c2547f86c1403105020adee5de67ac510999e"],
-                        "installer": "com.android.vending"},
-                "version": {"package": "app.lokke.main", "binary": "1.1.0", "js": "1.1.0"},
-                "platform": {"isAndroid": True, "isIOS": False, "isTV": False, "isWeb": False,
-                             "isMobile": True, "isWebTV": False, "isElectron": False}
+            "reason":"app-focus",
+            "locale":self.current_language,
+            "theme":"dark",
+            "metadata":{
+                "device":{
+                    "type":"desktop",
+                    "uniqueId":unique_id
+                },
+                "os":{
+                    "name":"win32",
+                    "version":"Windows 10 Pro",
+                    "abis":[
+                        "x64"
+                    ],
+                    "host":"Lenovo"
+                },
+                "app":{
+                    "platform":"electron"
+                },
+                "version":{
+                    "package":"tv.vavoo.app",
+                    "binary":"3.1.8",
+                    "js":"3.1.8"
+                }
             },
-            "appFocusTime": 0,
-            "playerActive": False,
-            "playDuration": 0,
-            "devMode": True,
-            "hasAddon": True,
-            "castConnected": False,
-            "package": "app.lokke.main",
-            "version": "1.1.0",
-            "process": "app",
-            "firstAppStart": now_ms - 86400000,
-            "lastAppStart": now_ms,
-            "ipLocation": None,
-            "adblockEnabled": False,
-            "proxy": {"supported": ["ss", "openvpn"], "engine": "openvpn", "ssVersion": 1,
-                      "enabled": False, "autoServer": True, "id": "fi-hel"},
-            "iap": {"supported": True}
+            "appFocusTime":0,
+            "playerActive":False,
+            "playDuration":0,
+            "devMode":False,
+            "hasAddon":True,
+            "castConnected":False,
+            "package":"tv.vavoo.app",
+            "version":"3.1.8",
+            "process":"app",
+            "firstAppStart":now_ms,
+            "lastAppStart":now_ms,
+            "ipLocation":None,
+            "adblockEnabled":True,
+            "proxy":{
+                "supported":[
+                    "ss"
+                ],
+                "engine":"Mu",
+                "enabled":False,
+                "autoServer":True
+            },
+            "iap":{
+                "supported":False
+            }
         }
         headers = {
             "user-agent": "okhttp/4.11.0",
@@ -220,16 +239,16 @@ class VavooExtractor:
         stream_headers = {}
 
         # Step 1: Try resolve via lokke.app signature + mediahubmx
-        # sig = await self._get_auth_signature()
-        # if sig:
-        #     resolved_url = await self._resolve_via_mediahubmx(url, sig)
-        #     if resolved_url:
-        #         logger.info(f"Resolved via mediahubmx: {resolved_url[:80]}...")
-        #         stream_headers = {
-        #             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        #             "Referer": "https://vavoo.to",
-        #             "Origin": "https://vavoo.to",
-        #         }
+        sig = await self._get_auth_signature()
+        if sig:
+            resolved_url = await self._resolve_via_mediahubmx(url, sig)
+            if resolved_url:
+                logger.info(f"Resolved via mediahubmx: {resolved_url[:80]}...")
+                stream_headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    "Referer": "https://vavoo.to",
+                    "Origin": "https://vavoo.to",
+                }
 
         # Step 2: Fallback — TS signature via ping2
         if not resolved_url:
