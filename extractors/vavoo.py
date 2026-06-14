@@ -94,7 +94,7 @@ class VavooExtractor:
         now_ms = int(time.time() * 1000)
         body = {
             "reason":"app-focus",
-            "locale":self.current_language,
+            "locale":"en",
             "theme":"dark",
             "metadata":{
                 "device":{
