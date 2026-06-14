@@ -15,7 +15,7 @@ import random
 logger = logging.getLogger(__name__)
 
 # Auth constants aligned with working plugin.video.vavooto
-_LOKKE_PING_URL = "https://www.lokke.app/api/app/ping"
+_LOKKE_PING_URL = "https://www.vavoo.tv/api/app/ping"
 _LOKKE_TOKEN = "ldCvE092e7gER0rVIajfsXIvRhwlrAzP6_1oEJ4q6HH89QHt24v6NNL_jQJO219hiLOXF2hqEfsUuEWitEIGN4EaHHEHb7Cd7gojc5SQYRFzU3XWo_kMeryAUbcwWnQrnf0-"
 _RESOLVE_URL = "https://vavoo.to/mediahubmx-resolve.json"
 _TS_PING2_URL = "https://www.vavoo.tv/api/box/ping2"
